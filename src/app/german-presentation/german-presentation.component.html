@@ -1,0 +1,17 @@
+<div class="container">
+    {{currentEnglishSentence}}
+</div>
+<div class="container" #germansentenceanswer>
+    <span *ngIf="control">{{goToTheNextText}}</span>
+    <button  class="btn btn-outline-dark" *ngFor="let word of germanWordsAnswer; index as i" (click)="sendToContainer(i, germanWordsAnswer, germanWords)">
+        {{word}}
+    </button>
+</div>
+<div class="container">
+    <button class="btn btn-outline-dark" *ngFor="let word of germanWords; index as i" (click)="sendToContainer(i, germanWords, germanWordsAnswer, germansentenceanswer.innerText)">
+        {{word}}
+    </button>
+</div>
+<div class="container">
+    <h4 *ngFor="let answer of rightAnswers">{{answer}}</h4>
+</div>
