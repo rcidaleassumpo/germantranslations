@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { GermanMainExercise } from '../germanexercisemain';
-import { GermanTexts } from '../service/germantexts.interface'
-import { Observable } from '../../../node_modules/rxjs';
+import { GermanTexts } from './germantexts.interface'
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -30,7 +30,11 @@ export class DataService {
           }
           holder.push(new GermanMainExercise(data))
         }
-        return holder[nextTextNumber]
+        let a = {
+          holder: holder[nextTextNumber],
+          holderLength: holder.length 
+        }
+        return a
       }))
   }    
 } 

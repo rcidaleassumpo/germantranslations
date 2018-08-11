@@ -11,19 +11,18 @@ export class GermanPresentationComponent implements OnInit {
 
   constructor(private service: DataService) { }
 
-
   currentEnglishSentence;
   currentGermanSentence;
   germanWordsAnswer = []
   germanWords
   nextSentenceNumber = 0
+  currentTextNumber = 0
   germanSentencesLength
+  germanTextlength:number;
   rightAnswers = []
-  @ViewChild('germansentenceanswer') germansentenceanswer: ElementRef;
-  goToTheNextText = 'Go to the next text'
-  control:boolean = false;
+  control = false;
   ngOnInit() {
-    this.getData(0,0)
+    this.getData(0,this.currentTextNumber)
   }
 
   ngOnDestroy() {
@@ -32,15 +31,16 @@ export class GermanPresentationComponent implements OnInit {
   }
 
 
-  getData(nextSentenceNumber, nextTextNumber?){
+  getData(nextSentenceNumber, nextTextNumber){
     let _this = this
     _this.service.getData(nextTextNumber)
       .subscribe(function(res){
-        _this.germanSentencesLength = res.germanSentences.length 
+        _this.germanTextlength = res.holderLength
+        _this.germanSentencesLength = res.holder.germanSentences.length 
         _this.germanWordsAnswer = []
-        _this.currentEnglishSentence = res.englishSentences[nextSentenceNumber].trim()
-        _this.currentGermanSentence = res.germanSentences[nextSentenceNumber].trim()
-        _this.germanWords = _this.currentGermanSentence.split(' ')
+        _this.currentEnglishSentence = res.holder.englishSentences[nextSentenceNumber].trim()
+        _this.currentGermanSentence = res.holder.germanSentences[nextSentenceNumber].trim()
+        _this.germanWords = _this.randomOrderArr(_this.currentGermanSentence.split(' '))
       })
   }
   sendToContainer(index,arr, arr2){
@@ -52,27 +52,53 @@ export class GermanPresentationComponent implements OnInit {
   checkCurrentSentence(content){
     if(this.currentGermanSentence == content){
       if(this.nextSentenceNumber === this.germanSentencesLength-1){
-        this.control = true
-        //todo => add Animation for something to come from the side of the screen into the screen
-        // saying that the particular text was finished, and that you should work on the next text
-        this.currentEnglishSentence = []
-        this.nextSentenceNumber = 0
-        this.germanWordsAnswer = []
-        this.rightAnswers.push(content)
-
+        this.goToNextText()
         console.log('You should go to the next Text')
+        
       } else {
         console.log('calling next sentence')
-        this.getData(this.nextSentenceNumber+1,0)
+        this.getData(this.nextSentenceNumber+1,this.currentTextNumber)
         this.nextSentenceNumber =  this.nextSentenceNumber + 1
         this.rightAnswers.push(content)
       }
     }
   }
-  goToNextText(content){
-    if(content === this.currentGermanSentence){
-      this.getData(this.nextSentenceNumber,0)
-      
+  randomOrderArr(arr){
+    return arr.sort(function() {
+      return .5 - Math.random();
+    });
+  }
+  goToNextSentence(){
+    if(this.nextSentenceNumber === this.germanSentencesLength-1){
+      console.log('no more sentences, going to next text.')
+      this.clearData()
+      this.goToNextText()
+    } else {
+      this.getData(this.nextSentenceNumber+1,this.currentTextNumber)
+      this.nextSentenceNumber =  this.nextSentenceNumber + 1
     }
+    
+  }
+  goToNextText(){
+    //todo => add Animation for something to come from the side of the screen into the screen
+    // saying that the particular text was finished, and that you should work on the next text
+    console.log(this.currentTextNumber,this.germanTextlength)
+    if(this.currentTextNumber === this.germanTextlength - 1){
+      this.control = true;
+      this.clearData()
+      console.log('You have finished all the exercises.')
+    } else {
+      this.clearData()
+      this.nextSentenceNumber = 0
+      this.currentTextNumber += 1
+      this.getData(this.nextSentenceNumber,this.currentTextNumber)
+    }
+    
+  }
+  clearData(){
+      this.currentEnglishSentence = []
+      this.germanWordsAnswer = []
+      this.rightAnswers = []
+      this.germanWords = []
   }
 }
