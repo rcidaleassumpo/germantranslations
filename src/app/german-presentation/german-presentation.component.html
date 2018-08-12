@@ -9,7 +9,7 @@
                     <div class="col">
                         <mdb-card>
                             <div class="mdb-card-body" style="min-height: 10rem" >
-                                <button  mdbBtn
+                                <button mdbBtn
                                         mdbBtn type="button" 
                                         color="elegant" 
                                         class="waves-light"
@@ -25,21 +25,19 @@
                 </div>
                 <div class="row">
                     <div class="col" style="min-height: 7rem">
-                        <button
-                            mdbBtn
-                            mdbBtn type="button" 
-                            color="elegant" 
-                            class="waves-light"
-                            size="sm" 
-                            mdbWavesEffect 
-                            *ngFor="let word of germanWords; index as i" 
-                            (click)="sendToContainer(i, germanWords, germanWordsAnswer, germansentenceanswer.innerText)">
+                        <button mdbBtn
+                                mdbBtn type="button" 
+                                color="elegant" 
+                                class="waves-light"
+                                size="sm" 
+                                mdbWavesEffect 
+                                *ngFor="let word of germanWords; index as i" 
+                                (click)="sendToContainer(i, germanWords, germanWordsAnswer, germansentenceanswer.innerText)">
                         {{word}}
                         </button>
                     </div>
                     
                 </div>
-                
                 <div class="row">
                     <div class="col">
                         <button mdbBtn
