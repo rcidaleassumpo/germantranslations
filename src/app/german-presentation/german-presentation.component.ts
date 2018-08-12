@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { DataService } from '../service/data.service';
+import { interval } from '../../../node_modules/rxjs';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class GermanPresentationComponent implements OnInit {
   germanTextlength:number;
   rightAnswers = []
   control = false;
+  state = false;
   ngOnInit() {
     this.getData(0,this.currentTextNumber)
   }
@@ -47,6 +49,7 @@ export class GermanPresentationComponent implements OnInit {
     let removed = arr.splice(index,1)
     arr2.push(removed)
     this.checkCurrentSentence(arr2.join(' '))
+    console.log(this.state)
   }
 
   checkCurrentSentence(content){
@@ -57,12 +60,20 @@ export class GermanPresentationComponent implements OnInit {
         
       } else {
         console.log('calling next sentence')
+        //this.state = !this.state;
+        this.state = !this.state;
         this.getData(this.nextSentenceNumber+1,this.currentTextNumber)
         this.nextSentenceNumber =  this.nextSentenceNumber + 1
         this.rightAnswers.push(content)
       }
     }
   }
+
+  updateShow(event){
+    
+    this.state = event
+  }
+
   randomOrderArr(arr){
     return arr.sort(function() {
       return .5 - Math.random();
@@ -74,6 +85,7 @@ export class GermanPresentationComponent implements OnInit {
       this.clearData()
       this.goToNextText()
     } else {
+      this.rightAnswers.push(this.currentGermanSentence)
       this.getData(this.nextSentenceNumber+1,this.currentTextNumber)
       this.nextSentenceNumber =  this.nextSentenceNumber + 1
     }

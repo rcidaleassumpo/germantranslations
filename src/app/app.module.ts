@@ -11,6 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { GermanExerciseComponent } from './german-exercise/german-exercise.component';
 import { GermanPresentationComponent } from './german-presentation/german-presentation.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { EnterLeaveComponent } from './enter-leave/enter-leave.component';
 
 
 @NgModule({
@@ -21,13 +22,14 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     NavbarComponent,
     GermanExerciseComponent,
     GermanPresentationComponent,
+    EnterLeaveComponent,
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MDBBootstrapModule.forRoot(),
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],
